@@ -26,26 +26,20 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         for (int i = 0; i < size1; ++i){
             //find first not matched char
             if (str1[i] != str2[i]){
-                for (int j = i+1; j < size1; ++j){ //check if rest char matched
-                    if (str1[j] != str2[j]){return false;}
-                }
-                return true;
+                return str1.substr(i+1) == str2.substr(i+1);
             }
         }
-    } else if (size1 == size2 +1 || size1 == size2 -1){
-        int min_size = min(size1, size2);
-        string min_string = (size1 < size2)? str1:str2;
-        string max_string = (size1 <= size2)? str2:str1;
-        for (int i= 0; i <min_size; ++i){
-            if (str1[i] != str2[i]){
-                for (int j = i; j < min_size; ++j){
-                    if (min_string[j] != max_string[j+1]){
-                        return false;
-                    }
-                }
-                return true;
+    } else if (abs(size1 - size2) == 1){
+        int i = 0; int j =0;
+        while (i < size1 && j < size2){
+            if (str1[i] != str2[j]){
+                if (size1 > size2){++i;}
+                else { ++j;}
+                return str1.substr(i) == str2.substr(j);
             }
+            ++i; ++j;
         }
+        return true;
     }
     return false;
 }
@@ -59,9 +53,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         error(begin_word, end_word, "Begin word same as end word (for calling generate_word_ladder)");
     }
     
-    if (word_list.find(end_word) == word_list.end()){
-        error(end_word, end_word, end_word + " is not contained in the word_list");
-    }
+    // if (word_list.find(end_word) == word_list.end()){
+    //     error(end_word, end_word, end_word + " is not contained in the word_list");
+    // }
 
     queue<vector<string>> word_ladder;
     word_ladder.push({begin_word});
@@ -72,7 +66,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         vector<string> ladder = word_ladder.front();
         word_ladder.pop();
         string last_word = ladder.back();
-        //cout << "begin loop" << endl;
         for (string word: word_list){
             // std::transform(word.begin(), word.end(), word.begin(), [](unsigned char c) {
             //     return std::tolower(c);
@@ -84,12 +77,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     //cout << word << " ";
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
-                    // for (string w: ladder){
-                    //     new_ladder.push_back(w);
-                    // }
                     new_ladder.push_back(word);
                     if (word == end_word){
-                        cout << "target word find";
+                        //cout << "target word find";
                         return new_ladder;
                     }
                     word_ladder.push(new_ladder);
