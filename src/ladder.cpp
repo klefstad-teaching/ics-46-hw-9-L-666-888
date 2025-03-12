@@ -54,7 +54,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     }
     
     if (word_list.find(end_word) == word_list.end()){
-        error(end_word, end_word, end_word + " is not contained in the word_list");
+        return {}
+        // error(end_word, end_word, end_word + " is not contained in the word_list");
     }
 
     queue<vector<string>> word_ladder;
@@ -87,8 +88,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
         }
     }
-    error(begin_word, end_word, "Now word ladder found.\n");
-    //return {};
+    //error(begin_word, end_word, "Now word ladder found.\n");
+    return {};
 }
 
 void load_words(set<string> & word_list, const string& file_name){
@@ -106,6 +107,9 @@ void load_words(set<string> & word_list, const string& file_name){
 }
 
 void print_word_ladder(const vector<string>& ladder){
+    if (ladder.empty()){
+        cout << "No word ladder found" << endl;
+    }
     cout << "Word ladder found: ";
     for (string word: ladder){
         cout << word << " ";

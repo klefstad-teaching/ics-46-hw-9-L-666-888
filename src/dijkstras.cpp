@@ -12,21 +12,20 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     G_distance[source] = 0;
     previous[source] = source;
     vector<bool> visited(G.numVertices, false);
-    visited[source] = true;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.push({source, 0});
+    pq.push({0, source});
 
     while (!pq.empty()){
-        auto [v, v_weight] = pq.top();
+        auto [v_weight, v] = pq.top();
         pq.pop();
-        //vector<Edge> connections = edge_from(G, v);
         if (visited[v]){continue;}
         visited[v] = true;
+
         for (Edge e: G[v]){
             int new_distance = e.weight + v_weight;
-            if (!visited[e.dst] &&  new_distance< G_distance[e.dst]){
+            if (new_distance< G_distance[e.dst]){
                 G_distance[e.dst] = new_distance;
-                pq.push({e.dst, new_distance});
+                pq.push({new_distance,e.dst});
                 previous[e.dst] = v;
             }
         }
@@ -49,7 +48,6 @@ vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector
     int current_v = destination;
     
     while(previous[current_v] != current_v){
-        cout << current_v;
         insert_path(path, current_v);
         current_v = previous[current_v];
     }
