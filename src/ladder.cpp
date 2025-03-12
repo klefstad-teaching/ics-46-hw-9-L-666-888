@@ -54,7 +54,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     }
     
     if (word_list.find(end_word) == word_list.end()){
-        return {}
+        return {};
         // error(end_word, end_word, end_word + " is not contained in the word_list");
     }
 
