@@ -16,9 +16,9 @@ void error(string word1, string word2, string msg){
 }
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
-    // if (str1 == str2){
-    //     error(str1, str2, "same words passed to edit_distance_within");
-    // }
+    if (str1 == str2){
+        return false;
+    }
     
     int size1 = str1.size();
     int size2 = str2.size();
@@ -53,9 +53,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         error(begin_word, end_word, "Begin word same as end word (for calling generate_word_ladder)");
     }
     
-    // if (word_list.find(end_word) == word_list.end()){
-    //     error(end_word, end_word, end_word + " is not contained in the word_list");
-    // }
+    if (word_list.find(end_word) == word_list.end()){
+        error(end_word, end_word, end_word + " is not contained in the word_list");
+    }
 
     queue<vector<string>> word_ladder;
     word_ladder.push({begin_word});
@@ -87,7 +87,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
         }
     }
-    return {};
+    error(begin_word, end_word, "Now word ladder found.\n");
+    //return {};
 }
 
 void load_words(set<string> & word_list, const string& file_name){
@@ -106,8 +107,9 @@ void load_words(set<string> & word_list, const string& file_name){
 
 void print_word_ladder(const vector<string>& ladder){
     for (string word: ladder){
-        cout << word << " -> ";
+        cout << word << " ";
     }
+    cout << endl;
 }
 
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
