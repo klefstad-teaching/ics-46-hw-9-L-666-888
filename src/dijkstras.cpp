@@ -20,10 +20,11 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
         auto [v, v_weight] = pq.top();
         pq.pop();
         //vector<Edge> connections = edge_from(G, v);
+        if (visited[v]){continue;}
+        visited[v] = true;
         for (Edge e: G[v]){
             int new_distance = e.weight + v_weight;
             if (!visited[e.dst] &&  new_distance< G_distance[e.dst]){
-                visited[e.dst] = true;
                 G_distance[e.dst] = new_distance;
                 pq.push({e.dst, new_distance});
                 previous[e.dst] = v;
@@ -38,7 +39,6 @@ void insert_path(vector<int>& v, int new_replacement){
         v.push_back(new_replacement);
         return;
     }
-
     // Move elements to the right
     v.insert(v.begin(), new_replacement);
 }
